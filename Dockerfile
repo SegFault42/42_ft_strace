@@ -7,7 +7,7 @@ COPY ./.gitconfig /root/.gitconfig
 COPY ./id_rsa /root/.ssh/id_rsa
 COPY ./id_rsa.pub /root/.ssh/id_rsa.pub
 
-RUN apt-get update && apt-get install -y zsh git vim strace curl wget
+RUN apt-get update && apt-get install -y zsh git vim strace curl wget clang
 
 RUN ssh-keyscan -t rsa github.com >> /root/.ssh/known_hosts
 
@@ -19,6 +19,4 @@ RUN cd /tmp/subl && sh /tmp/subl/installer.sh
 
 RUN git clone git@github.com:SegFault42/42_ft_strace.git /root/42_ft_strace
 
-RUN ls -la /root
-
-WORKDIR /root
+WORKDIR /root/42_ft_strace
