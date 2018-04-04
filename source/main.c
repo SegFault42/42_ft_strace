@@ -1,6 +1,8 @@
-#include "strace.h"
+#include "ft_strace.h"
 
 int	main(int argc, char **argv)
 {
+	(void)argc;
+	(void)argv;
 	return (0);
 }

@@ -6,16 +6,16 @@ SRCS	=	./source/main.c\
 
 OBJS	= $(SRCS:.c=.o)
 
-INCLUDE	= -I ./include \
+INCLUDE	= -I ./include/ \
+
 ###########################_RELINK_MODIFY_.h####################################
-RELINK = ./include/strace.h
+RELINK = ./include/ft_strace.h
 ################################################################################
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	@make -s -C ./libft/
-	@$(CC) $(FLAG) -o $(NAME) $(OBJS) $(LFT)
+	@$(CC) $(FLAG) -o $(NAME) $(OBJS) $(INCLUDE)
 	@printf "✅  Compilation done. \n"
 
 %.o : %.c $(RELINK) ./Makefile
