@@ -17,6 +17,6 @@ RUN git clone https://github.com/reversTeam/Sublivim.git /tmp/subl
 
 RUN cd /tmp/subl && sh /tmp/subl/installer.sh
 
-RUN git clone YOUR_SSH_REPO /root/42_ft_strace # Example : git@github.com:SegFault42/42_ft_strace.git
+RUN git clone git@github.com:SegFault42/42_ft_strace.git /root/42_ft_strace # Example : 
 
-WORKDIR /root
+WORKDIR /root/42_ft_strace
