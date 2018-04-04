@@ -7,7 +7,7 @@ COPY ./.gitconfig /root/.gitconfig
 COPY ./id_rsa /root/.ssh/id_rsa
 COPY ./id_rsa.pub /root/.ssh/id_rsa.pub
 
-RUN apt-get update && apt-get install -y zsh git vim strace curl wget
+RUN apt-get update && apt-get install -y zsh git vim strace curl wget make
 
 RUN ssh-keyscan -t rsa github.com >> /root/.ssh/known_hosts
 
