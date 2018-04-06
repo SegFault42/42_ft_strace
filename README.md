@@ -22,3 +22,8 @@ then go to github.com and add the content of id_rsa.pub in your github profile
 	$ cd 42_ft_strace
 	$ docker build -t strace .
 	$ docker run --security-opt seccomp:unconfined -it strace:latest zsh
+
+
+### Help
+
+All syscall define are here :  /usr/include/x86_64-linux-gnu/bits/syscall.h

@@ -33,8 +33,14 @@ int	main(int argc, char **argv)
 			waitpid(child, &status, 0);
 			ptrace(PTRACE_GETREGS, child, NULL, &regs);
 			if (old != regs.orig_rax) {
-				printf("orig_rax : 0x%llx\n", regs.orig_rax);
+				printf("orig_rax : 0x%llx\t | ", regs.orig_rax);
+				if (regs.rdi != 0x0) {
+					printf("rdi : %llx\t |", regs.rdi);
+				} else {
+					printf("NULL |");
+				}
 				old = regs.orig_rax;
+				puts("");
 			}
 			ptrace(PTRACE_SYSCALL, child, NULL, NULL);
 			waitpid(child, &status, 0);
