@@ -1,0 +1,27 @@
+Helloorig_rax : 0x3b	 | rdi : 7fff96a69935	 |
+orig_rax : 0xc	 | NULL |
+orig_rax : 0x15	 | rdi : 7f1b9fc88dc4	 |
+orig_rax : 0x15	 | rdi : 7f1b9fc8b580	 |
+orig_rax : 0x2	 | rdi : 7f1b9fc89271	 |
+orig_rax : 0x5	 | rdi : 3	 |
+orig_rax : 0x9	 | NULL |
+orig_rax : 0x3	 | rdi : 3	 |
+orig_rax : 0x15	 | rdi : 7f1b9fc88dc4	 |
+orig_rax : 0x2	 | rdi : 7f1b9fe90d60	 |
+orig_rax : 0x0	 | rdi : 3	 |
+orig_rax : 0x5	 | rdi : 3	 |
+orig_rax : 0x9	 | NULL |
+orig_rax : 0x9	 | NULL |
+orig_rax : 0xa	 | rdi : 7f1b9fa5f000	 |
+orig_rax : 0x9	 | rdi : 7f1b9fc5f000	 |
+orig_rax : 0x9	 | rdi : 7f1b9fc65000	 |
+orig_rax : 0x3	 | rdi : 3	 |
+orig_rax : 0x9	 | NULL |
+orig_rax : 0x9	 | NULL |
+orig_rax : 0x9e	 | rdi : 1002	 |
+orig_rax : 0xa	 | rdi : 7f1b9fc5f000	 |
+orig_rax : 0xa	 | rdi : 600000	 |
+orig_rax : 0xa	 | rdi : 7f1b9fe8e000	 |
+orig_rax : 0xb	 | rdi : 7f1b9fe8a000	 |
+orig_rax : 0x1	 | rdi : 1	 |
+orig_rax : 0xe7	 | rdi : 100	 |
