@@ -15,6 +15,9 @@
 
 #define BUFF_MAX	4096
 
+//['struct ustat *', 'mqd_t', 'struct linux_dirent *', 'loff_t __user *', 'struct pollfd *', 'mode_t', 'size_t', 'timer_t *', 'unsigned int *', 'struct io_event *', 'gid_t *', 'unsigned', 'const struct itimerspec *', 'struct getcpu_cache *', 'const char *', 'const struct iovcc *', 'const cap_user_data_t', 'const stuct timespec *', 'const struct rlimit64 *', 'struct msgbuf *', 'const struct timespec *', 'struct pt_regs *', 'size_t *', 'unsigned *', 'struct msghdr *', 'const clockid_t', 'const char __user *', 'struct stat *', 'uid_t', 'struct msqid_ds *', 'struct rusage *', 'struct __sysctl_args *', 'fd_set*', 'umode_t', 'struct old_utsname *', 'qid_t', 'struct mmsghdr *', 'cap_user_header_t', 'aio_context_t', 'const har *', 'const unsigned long *', 'const int *', 'NONE', 'fd_set *', 'struct itimerspec *', 'struct sokaddr *', 'u32', 'key_serial_t', 'stack_t *', 'siginfo_t *', 'struct perf_event_attr *', 'char __user *', 'struct sigevent *', 'struct poll_fd *', 'struct timespec *', 'struct shmid_ds *', 'struct robust_list_head *', 'unsigned int', 'struct epoll_event *', 'clockid_t', '__u64', 'const chat *', 'const void *', 'int *', 'off_t *', 'const struct mq_attr *', 'struct utimbuf *', 'struct sched_param *', 'struct timex *', 'struct rlimit64 *', 'sigset_t *', 'struct statfs *', 'unsigned long *', 'uid_t *', 'u32 *', 'long', 'struct sockaddr *', 'struct sembuf *', 'struct siginfo *', 'cap_user_data_t', 'struct sigaction *', 'time_t *', 'const sigset_t *', 'gid_t', 'struct kexec_segment *', 'struct file_handle *', 'pid_t', 'timer_t', 'struct sysinfo *', 'const struct iovec *', 'void *', 'const struct sigevent *', 'loff_t', 'int', 'u64', 'struct iocb *', 'off_t', 'struct task_struct *', 'struct rlimit *', 'struct timeval *', 'ing', 'fconst char *', 'const struct sigaction *', 'unsigned long', '__s32', 'const struct iovec __user *', 'union bpf_attr *', 'struct linux_dirent64 *', 'const stack_t *', 'unsigned\nint', 'union semun', 'key_t', 'struct sched_attr __user *', 'struct mq_attr *', 'struct itimerval *', 'loff_t *', 'char *', 'aio_context_t *', 'unsigned char *', 'struct timezone *']
+
+
 enum
 {
 	NONE,
@@ -22,7 +25,9 @@ enum
 	U_INT,
 	LONG,
 	SIZE_T,
-	CHAR_PTR
+	CHAR_PTR,
+	S_USTAT_PTR,
+	CONST_CHZR_PTR
 }			e_syscall;
 
 typedef struct		s_syscall
