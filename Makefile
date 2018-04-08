@@ -3,6 +3,7 @@ NAME	= ft_strace
 CC		= clang
 FLAG	= -Weverything
 SRCS	=	./source/main.c\
+			./source/syscall_tbl.c
 
 OBJS	= $(SRCS:.c=.o)
 
@@ -27,13 +28,11 @@ clean:
 	@printf "                                                               \r"
 	@printf "✅  clean done ! n"
 	@rm -f $(OBJS)
-	@make -s clean -C ./libft/
 
 fclean:
 	@printf "                                                               \r"
 	@printf "✅  fclean done ! n"
 	@rm -f $(NAME) $(OBJS)
-	@make -s fclean -C ./libft/
 
 re: fclean all
 
