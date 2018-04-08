@@ -19,4 +19,6 @@ RUN cd /tmp/subl && sh /tmp/subl/installer.sh
 
 RUN git clone git@github.com:SegFault42/42_ft_strace.git /root/42_ft_strace # Example : 
 
+RUN cd /root/42_ft_strace && git pull
+
 WORKDIR /root/42_ft_strace
