@@ -317,8 +317,7 @@
 {"renameat2", 316, int, const char __user *, int, const char __user *, unsigned int, NONE},
 {"seccomp", 317, unsigned int, unsigned int, const char __user *, NONE, NONE, NONE},
 {"getrandom", 318, char __user *, size_t, unsigned int, NONE, NONE, NONE},
-{"memfd_create", 319, const char __user *, unsigned
-int, NONE, NONE, NONE, NONE},
+{"memfd_create", 319, const char __user *, unsigned int, NONE, NONE, NONE, NONE},
 {"kexec_file_load", 320, int, int, unsigned long, const char __user *, unsigned long, NONE},
 {"bpf", 321, int, union bpf_attr *, unsigned int, NONE, NONE, NONE},
 {"stub_execveat", 322, int, const char __user *, const char __user *, const char __user *, int, NONE},
