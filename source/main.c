@@ -11,7 +11,7 @@ void	usage(int argc)
 	}
 }
 
-int	main(int argc, char **argv)
+int	main(int argc, char **argv, char **env)
 {
 	pid_t					child = 0;
 	char					*const args[] = {NULL};
@@ -27,7 +27,7 @@ int	main(int argc, char **argv)
 		perror("fork()");
 	}
 	else if (child == 0) {
-		execvp(argv[1], args);
+		execve(argv[1], &argv[1], env);
 	} else {
 		kill(child, SIGSTOP);
 		ptrace(PTRACE_SEIZE, child, NULL, NULL);
