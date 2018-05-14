@@ -18,8 +18,6 @@ int	main(int argc, char **argv, char **env)
 	int						status = 0;
 	struct user_regs_struct	regs;
 	uint64_t				old = 0;
-	char message[1000];
-	char* temp_char2 = message;
 
 	usage(argc);
 	child = fork();
@@ -50,17 +48,34 @@ int	main(int argc, char **argv, char **env)
 			/*[>filepath[size] = '\0';<]*/
 			/*[>printf("File-%s-\n", filepath);<]*/
 			/*}*/
-			printf("Syscall = %s\t| ", g_syscall_table[regs.orig_rax].name);
+			printf("%s(", g_syscall_table[regs.orig_rax].name);
+
 			if (g_syscall_table[regs.orig_rax].rdi == UNSIGNED_INT) {
-				printf("rdi = %lld\t| ", regs.rdi);
+				printf("%lld", regs.rdi);
 			}
+			else if (g_syscall_table[regs.orig_rax].rdi == NONE)
+				printf("");
+			else if (g_syscall_table[regs.orig_rax].rdi == PTR)
+				printf("0x%llx", regs.rdi);
+			else
+				printf("?");
+
+			if (g_syscall_table[regs.orig_rax].rsi == UNSIGNED_INT) {
+				printf(", %lld", g_syscall_table[regs.orig_rax].rsi);
+			}
+			else if (g_syscall_table[regs.orig_rax].rsi == NONE)
+				printf("");
+			else
+				printf(", ?");
 			/*if (g_syscall_table[regs.orig_rax].rsi == CHAR_PTR) {*/
 				/*printf("rsi = %llu", regs.rsi);*/
 			/*}*/
 			old = regs.orig_rax;
-			puts("");
 			ptrace(PTRACE_SYSCALL, child, NULL, NULL);
 			waitpid(child, &status, 0);
+			printf(")");
+			puts("");
+			/*printf("\t= %lld\n", regs.rax);*/
 			if (WIFEXITED(status))
 				break ;
 		}
