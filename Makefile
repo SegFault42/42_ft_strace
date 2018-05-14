@@ -3,7 +3,8 @@ NAME	= ft_strace
 CC		= clang
 FLAG	= -Weverything
 SRCS	=	./source/main.c\
-			./source/syscall_tbl.c
+			./source/syscall_tbl.c\
+			./source/print.c
 
 OBJS	= $(SRCS:.c=.o)
 

@@ -34,47 +34,15 @@ int	main(int argc, char **argv, char **env)
 			ptrace(PTRACE_SYSCALL, child, NULL, NULL);
 			waitpid(child, &status, 0);
 			ptrace(PTRACE_GETREGS, child, NULL, &regs);
-			/*printf("orig_rax : 0x%llx\t | ", regs.orig_rax);*/
-			/*if (regs.rdi != 0x0) {*/
-			/*printf("rdi : %llx\t |", regs.rdi);*/
-			/*} else {*/
-			/*printf("NULL |");*/
-			/*}*/
 
-			/*if (regs.orig_rax == 0x0) {*/
-			/*if ()*/
-			/*[>sprintf(fdpath,"/proc/%u/fd/%llu", child, regs.rdi);<]*/
-			/*[>size = readlink(fdpath, &filepath, 256);<]*/
-			/*[>filepath[size] = '\0';<]*/
-			/*[>printf("File-%s-\n", filepath);<]*/
-			/*}*/
-			printf("%s(", g_syscall_table[regs.orig_rax].name);
+			print(&regs);
 
-			if (g_syscall_table[regs.orig_rax].rdi == UNSIGNED_INT) {
-				printf("%lld", regs.rdi);
-			}
-			else if (g_syscall_table[regs.orig_rax].rdi == NONE)
-				printf("");
-			else if (g_syscall_table[regs.orig_rax].rdi == PTR)
-				printf("0x%llx", regs.rdi);
-			else
-				printf("?");
-
-			if (g_syscall_table[regs.orig_rax].rsi == UNSIGNED_INT) {
-				printf(", %lld", g_syscall_table[regs.orig_rax].rsi);
-			}
-			else if (g_syscall_table[regs.orig_rax].rsi == NONE)
-				printf("");
-			else
-				printf(", ?");
 			/*if (g_syscall_table[regs.orig_rax].rsi == CHAR_PTR) {*/
 				/*printf("rsi = %llu", regs.rsi);*/
 			/*}*/
 			old = regs.orig_rax;
 			ptrace(PTRACE_SYSCALL, child, NULL, NULL);
 			waitpid(child, &status, 0);
-			printf(")");
-			puts("");
 			/*printf("\t= %lld\n", regs.rax);*/
 			if (WIFEXITED(status))
 				break ;
