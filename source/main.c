@@ -43,7 +43,6 @@ int	main(int argc, char **argv, char **env)
 			old = regs.orig_rax;
 			ptrace(PTRACE_SYSCALL, child, NULL, NULL);
 			waitpid(child, &status, 0);
-			/*printf("\t= %lld\n", regs.rax);*/
 			if (WIFEXITED(status))
 				break ;
 		}

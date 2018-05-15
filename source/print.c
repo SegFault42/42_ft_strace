@@ -90,5 +90,6 @@ void	print(struct user_regs_struct *regs)
 	print_r10(regs);
 	print_r8(regs);
 	print_r9(regs);
-	printf(")\n");
+	printf(")");
+	printf("\t= %llu\n", regs->rax);
 }
