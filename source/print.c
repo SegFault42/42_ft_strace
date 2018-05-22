@@ -5,7 +5,7 @@ extern const t_syscall	g_syscall_table[330];
 void	print_rdi(struct user_regs_struct *regs)
 {
 	if (g_syscall_table[regs->orig_rax].rdi == NUMBER) {
-		printf("%llu", regs->rdi);
+		printf("%lld", regs->rdi);
 	}
 	else if (g_syscall_table[regs->orig_rax].rdi == PTR)
 		printf("0x%llx", regs->rdi);
@@ -80,16 +80,21 @@ void	print_r9(struct user_regs_struct *regs)
 		printf(", ?");
 }
 
-void	print(struct user_regs_struct *regs)
+void	print(struct user_regs_struct *regs, int loop)
 {
-	printf("%s", g_syscall_table[regs->orig_rax].name);
-	printf("(");
-	print_rdi(regs);
-	print_rsi(regs);
-	print_rdx(regs);
-	print_r10(regs);
-	print_r8(regs);
-	print_r9(regs);
-	printf(")");
-	printf("\t= %llu\n", regs->rax);
+	if (!(loop % 2)) // first time getting all param register and seconde time to get ret stored in rax
+	{
+		printf("%s", g_syscall_table[regs->orig_rax].name);
+		printf("(");
+		print_rdi(regs);
+		print_rsi(regs);
+		print_rdx(regs);
+		print_r10(regs);
+		print_r8(regs);
+		print_r9(regs);
+		printf(")");
+	}
+	else
+		printf("\t= %lld\n", (long long int)regs->rax);
+
 }

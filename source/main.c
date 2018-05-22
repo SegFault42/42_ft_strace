@@ -18,6 +18,7 @@ int	main(int argc, char **argv, char **env)
 	int						status = 0;
 	struct user_regs_struct	regs;
 	uint64_t				old = 0;
+	int						loop = 0;
 
 	usage(argc);
 	child = fork();
@@ -35,16 +36,13 @@ int	main(int argc, char **argv, char **env)
 			waitpid(child, &status, 0);
 			ptrace(PTRACE_GETREGS, child, NULL, &regs);
 
-			print(&regs);
+			print(&regs, loop);
 
-			/*if (g_syscall_table[regs.orig_rax].rsi == CHAR_PTR) {*/
-				/*printf("rsi = %llu", regs.rsi);*/
-			/*}*/
-			old = regs.orig_rax;
-			ptrace(PTRACE_SYSCALL, child, NULL, NULL);
-			waitpid(child, &status, 0);
+			/*ptrace(PTRACE_SYSCALL, child, NULL, NULL);*/
+			/*waitpid(child, &status, 0);*/
 			if (WIFEXITED(status))
 				break ;
+			++loop;
 		}
 	}
 	return (0);
