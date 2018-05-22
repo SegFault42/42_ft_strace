@@ -15,10 +15,19 @@
 
 #define BUFF_MAX	4096
 
-#define PTR 0
-#define STRING 1
-#define NUMBER 2
-#define NONE 3
+#define PTR		0
+#define STRING	1
+#define NUMBER	2
+#define NONE	3
+
+#define UINT8	1
+#define UINT16	2
+#define UINT32	4
+#define UINT64	8
+#define INT8	16
+#define INT16	32
+#define INT32	64
+#define INT64	128
 
 // store type for each syscall param
 

@@ -2,7 +2,7 @@
 
 const t_syscall	g_syscall_table[330] =
 {
-	{"read", 0, NUMBER, STRING, NUMBER, NONE, NONE, NONE},
+	{"read", 0, UINT32 | NUMBER, STRING, NUMBER, NONE, NONE, NONE},
 	{"write", 1, NUMBER, STRING, NUMBER, NONE, NONE, NONE},
 	{"open", 2, STRING, NUMBER, NUMBER, NONE, NONE, NONE},
 	{"close", 3, NUMBER, NONE, NONE, NONE, NONE, NONE},
