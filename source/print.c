@@ -4,8 +4,11 @@ extern const t_syscall	g_syscall_table[330];
 
 void	print_rdi(struct user_regs_struct *regs)
 {
-	if (g_syscall_table[regs->orig_rax].rdi == NUMBER) {
-		printf("%lld", regs->rdi);
+	if (g_syscall_table[regs->orig_rax].rdi == SIGNED) {
+		printf("%d", (int)regs->rdi);
+	}
+	else if (g_syscall_table[regs->orig_rax].rdi == UNSIGNED) {
+		printf("%llu", regs->rdi);
 	}
 	else if (g_syscall_table[regs->orig_rax].rdi == PTR)
 		printf("0x%llx", regs->rdi);
@@ -17,8 +20,11 @@ void	print_rdi(struct user_regs_struct *regs)
 
 void	print_rsi(struct user_regs_struct *regs)
 {
-	if (g_syscall_table[regs->orig_rax].rsi == NUMBER) {
-		printf(", %lld", regs->rsi);
+	if (g_syscall_table[regs->orig_rax].rsi == SIGNED) {
+		printf(", %d", (int)regs->rsi);
+	}
+	else if (g_syscall_table[regs->orig_rax].rsi == UNSIGNED) {
+		printf(", %llu", regs->rsi);
 	}
 	else if (g_syscall_table[regs->orig_rax].rsi == PTR)
 		printf(", 0x%llx", regs->rsi);
@@ -30,8 +36,11 @@ void	print_rsi(struct user_regs_struct *regs)
 
 void	print_rdx(struct user_regs_struct *regs)
 {
-	if (g_syscall_table[regs->orig_rax].rdx == NUMBER) {
-		printf(", %lld", regs->rdx);
+	if (g_syscall_table[regs->orig_rax].rdx == SIGNED) {
+		printf(", %d", (int)regs->rdx);
+	}
+	else if (g_syscall_table[regs->orig_rax].rdx == UNSIGNED) {
+		printf(", %llu", regs->rdx);
 	}
 	else if (g_syscall_table[regs->orig_rax].rdx == PTR)
 		printf(", 0x%llx", regs->rdx);
@@ -43,8 +52,11 @@ void	print_rdx(struct user_regs_struct *regs)
 
 void	print_r10(struct user_regs_struct *regs)
 {
-	if (g_syscall_table[regs->orig_rax].r10 == NUMBER) {
-		printf(", %lld", regs->r10);
+	if (g_syscall_table[regs->orig_rax].r10 == SIGNED) {
+		printf(", %d", (int)regs->r10);
+	}
+	else if (g_syscall_table[regs->orig_rax].r10 == UNSIGNED) {
+		printf(", %llu", regs->r10);
 	}
 	else if (g_syscall_table[regs->orig_rax].r10 == PTR)
 		printf(", 0x%llx", regs->r10);
@@ -56,8 +68,11 @@ void	print_r10(struct user_regs_struct *regs)
 
 void	print_r8(struct user_regs_struct *regs)
 {
-	if (g_syscall_table[regs->orig_rax].r8 == NUMBER) {
-		printf(", %lld", regs->r8);
+	if (g_syscall_table[regs->orig_rax].r8 == SIGNED) {
+		printf(", %d", (int)regs->r8);
+	}
+	else if (g_syscall_table[regs->orig_rax].r8 == UNSIGNED) {
+		printf(", %llu", regs->r8);
 	}
 	else if (g_syscall_table[regs->orig_rax].r8 == PTR)
 		printf(", 0x%llx", regs->r8);
@@ -69,8 +84,11 @@ void	print_r8(struct user_regs_struct *regs)
 
 void	print_r9(struct user_regs_struct *regs)
 {
-	if (g_syscall_table[regs->orig_rax].r9 == NUMBER) {
-		printf(", %lld", regs->r9);
+	if (g_syscall_table[regs->orig_rax].r9 == SIGNED) {
+		printf(", %d", (int)regs->r9);
+	}
+	else if (g_syscall_table[regs->orig_rax].r9 == UNSIGNED) {
+		printf(", %llu", regs->r9);
 	}
 	else if (g_syscall_table[regs->orig_rax].r9 == PTR)
 		printf(", 0x%llx", regs->r9);
@@ -95,6 +113,6 @@ void	print(struct user_regs_struct *regs, int loop)
 		printf(")");
 	}
 	else
-		printf("\t= %lld\n", (long long int)regs->rax);
+		printf("\t= %d\n", (long long int)regs->rax);
 
 }

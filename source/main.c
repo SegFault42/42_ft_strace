@@ -21,6 +21,7 @@ int	main(int argc, char **argv, char **env)
 	int						loop = 0;
 
 	usage(argc);
+	get_path_bin(argv[1]);
 	child = fork();
 	if (child == -1) {
 		perror("fork()");

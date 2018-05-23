@@ -4,7 +4,8 @@ CC		= clang
 FLAG	= -Weverything
 SRCS	=	./source/main.c\
 			./source/syscall_tbl.c\
-			./source/print.c
+			./source/print.c\
+			./source/path_bin.c
 
 OBJS	= $(SRCS:.c=.o)
 

@@ -11,6 +11,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <fcntl.h>
+#include <errno.h>
 #include <sys/reg.h>
 
 #define BUFF_MAX	4096
@@ -28,6 +29,9 @@
 #define INT16	32
 #define INT32	64
 #define INT64	128
+
+#define SIGNED		4
+#define UNSIGNED	5
 
 // store type for each syscall param
 
@@ -52,5 +56,6 @@ void	print_rdx(struct user_regs_struct *regs);
 void	print_r10(struct user_regs_struct *regs);
 void	print_r8(struct user_regs_struct *regs);
 void	print_r9(struct user_regs_struct *regs);
+char	*get_path_bin(char *str);
 
 #endif
