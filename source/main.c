@@ -19,15 +19,21 @@ int	main(int argc, char **argv, char **env)
 	struct user_regs_struct	regs;
 	uint64_t				old = 0;
 	int						loop = 0;
+	char					*path = NULL;
 
 	usage(argc);
-	get_path_bin(argv[1]);
+
+	if (argv[1][0] != '/')
+		path = get_path_bin(argv[1]);
+	else
+		path = argv[1];
+
 	child = fork();
 	if (child == -1) {
 		perror("fork()");
 	}
 	else if (child == 0) {
-		execve(argv[1], &argv[1], env);
+		execve(path, &argv[1], env);
 	} else {
 		kill(child, SIGSTOP);
 		ptrace(PTRACE_SEIZE, child, NULL, NULL);
@@ -46,5 +52,7 @@ int	main(int argc, char **argv, char **env)
 			++loop;
 		}
 	}
+	if (path)
+		free(path);
 	return (0);
 }
