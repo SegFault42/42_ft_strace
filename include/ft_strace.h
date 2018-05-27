@@ -39,6 +39,15 @@
 
 #define EXIT_GROUP	231
 
+#define B_RED		"\033[1;31;40m"
+#define B_GREEN		"\033[1;32;40m"
+#define B_YELLOW	"\033[1;33;40m"
+#define B_BLUE		"\033[1;34;40m"
+#define B_PURPLE	"\033[1;35;40m"
+#define B_CYAN		"\033[1;36;40m"
+#define B_WHITE		"\033[1;37;40m"
+#define END			"\033[0m"
+
 // store type for each syscall param
 
 typedef struct		s_errno
@@ -61,13 +70,13 @@ typedef struct		s_syscall
 }					t_syscall;
 
 void	usage(int argc);
-void	print(struct user_regs_struct *regs, int loop);
-void	print_rdi(struct user_regs_struct *regs);
-void	print_rsi(struct user_regs_struct *regs);
-void	print_rdx(struct user_regs_struct *regs);
-void	print_r10(struct user_regs_struct *regs);
-void	print_r8(struct user_regs_struct *regs);
-void	print_r9(struct user_regs_struct *regs);
+void	print(struct user_regs_struct *regs, int loop, int child);
+void	print_rdi(struct user_regs_struct *regs, int child);
+void	print_rsi(struct user_regs_struct *regs, int child);
+void	print_rdx(struct user_regs_struct *regs, int child);
+void	print_r10(struct user_regs_struct *regs, int child);
+void	print_r8(struct user_regs_struct *regs, int child);
+void	print_r9(struct user_regs_struct *regs, int child);
 char	*get_path_bin(char *str);
 
 #endif

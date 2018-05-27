@@ -48,7 +48,7 @@ int	main(int argc, char **argv, char **env)
 			waitpid(child, &status, 0);
 			ptrace(PTRACE_GETREGS, child, NULL, &regs);
 
-			print(&regs, loop);
+			print(&regs, loop, child);
 
 			if (WIFEXITED(status))
 				break ;
