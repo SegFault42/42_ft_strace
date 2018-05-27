@@ -37,7 +37,15 @@
 #define SIGNED		4
 #define UNSIGNED	5
 
+#define EXIT_GROUP	231
+
 // store type for each syscall param
+
+typedef struct		s_errno
+{
+	char			*define;	// define name
+	char			*desc;		// define description
+}					t_errno;
 
 typedef struct		s_syscall
 {

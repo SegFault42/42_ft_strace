@@ -14,17 +14,15 @@ void	usage(int argc)
 int	main(int argc, char **argv, char **env)
 {
 	pid_t					child = 0;
-	char					*const args[] = {NULL};
 	int						status = 0;
 	struct user_regs_struct	regs;
-	uint64_t				old = 0;
 	int						loop = 0;
 	char					*path = NULL;
 
 	usage(argc);
 
 	// If we don't have absolute path, we need to search the binary path
-	if (argv[1][0] != '/') {
+	if (argv[1][0] != '/' && argv[1][0] != '.') {
 		path = get_path_bin(argv[1]);
 		if (!path) {
 			dprintf(2, "ft_strace: Can't stat '%s': No such file or directory\n", argv[1]);

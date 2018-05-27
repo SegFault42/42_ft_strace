@@ -80,9 +80,9 @@ char	*get_path_bin(char *bin)
 	}
 
 	// free tab
-	for (int i = 0; tab[i]; i++) {
-		free(tab[i]);
-		tab[i] = NULL;
+	for (int inc = 0; tab[inc]; inc++) {
+		free(tab[inc]);
+		tab[inc] = NULL;
 	}
 	free(tab);
 

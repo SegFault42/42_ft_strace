@@ -27,3 +27,7 @@ then go to github.com and add the content of id_rsa.pub in your github profile
 ### Help
 
 All syscall define are here :  /usr/include/x86_64-linux-gnu/bits/syscall.h
+
+Errno:
+
+If RAX is negatif, strace will print -1 and perror

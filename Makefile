@@ -1,9 +1,10 @@
 ##################################_COMPILATION_#################################
 NAME	= ft_strace
 CC		= clang
-FLAG	= -Weverything -g
+FLAG	= -g -Weverything
 SRCS	=	./source/main.c\
 			./source/syscall_tbl.c\
+			./source/errno_tbl.c\
 			./source/print.c\
 			./source/path_bin.c
 

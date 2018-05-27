@@ -1,6 +1,7 @@
 #include "../include/ft_strace.h"
 
 extern const t_syscall	g_syscall_table[330];
+extern const t_errno	g_errno_table[134];
 
 void	print_rdi(struct user_regs_struct *regs)
 {
@@ -98,10 +99,21 @@ void	print_r9(struct user_regs_struct *regs)
 		printf(", ?");
 }
 
+static void	print_rax(struct user_regs_struct *regs)
+{
+	if (regs->orig_rax == EXIT_GROUP)
+		printf("\t= ?\n");
+	else if ((long long int)regs->rax < 0) {
+		printf("\t= -1 %s (%s)\n", g_errno_table[((long long int)regs->rax * -1)].define,
+								g_errno_table[((long long int)regs->rax * -1)].desc);
+	}
+	else
+		printf("\t= %lld\n", (long long int)regs->rax);
+}
+
 void	print(struct user_regs_struct *regs, int loop)
 {
-	if (!(loop % 2)) // first time getting all param register and seconde time to get ret stored in rax
-	{
+	if (!(loop % 2)) { // first time getting all param register and seconde time to get ret stored in rax
 		printf("%s", g_syscall_table[regs->orig_rax].name);
 		printf("(");
 		print_rdi(regs);
@@ -113,6 +125,6 @@ void	print(struct user_regs_struct *regs, int loop)
 		printf(")");
 	}
 	else
-		printf("\t= %d\n", (long long int)regs->rax);
+		print_rax(regs);
 
 }
