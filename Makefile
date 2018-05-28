@@ -3,8 +3,8 @@ NAME	= ft_strace
 CC		= clang
 FLAG	= -g -Weverything
 SRCS	=	./source/main.c\
-			./source/syscall_tbl.c\
 			./source/errno_tbl.c\
+			./source/syscall_tbl.c\
 			./source/print.c\
 			./source/path_bin.c
 

@@ -3,9 +3,28 @@
 extern const t_syscall	g_syscall_table[330];
 extern const t_errno	g_errno_table[134];
 
+/*static void	print_reg_as_str(struct user_regs_struct *regs, int child)*/
+/*{*/
+	/*int				incr = 0;*/
+	/*long	addr = 0;*/
+
+	/*printf("\"");*/
+	/*while (true) {*/
+		/*addr = ptrace(PTRACE_PEEKDATA, child, regs->rdi + incr, NULL);*/
+		/*if (errno != 0)*/
+			/*break;*/
+		/*printf("%s", (char *)&addr);*/
+		/*if (memchr(&addr, 0, sizeof(addr)))*/
+			/*break ;*/
+		/*incr += sizeof(addr);*/
+	/*}*/
+	/*printf("\"");*/
+/*}*/
+
 void	print_rdi(struct user_regs_struct *regs, int child)
 {
 	long	addr = 0;
+	uint64_t	incr = 0;
 
 	if (g_syscall_table[regs->orig_rax].rdi == SIGNED)
 		printf("%d", (int)regs->rdi);
@@ -14,8 +33,18 @@ void	print_rdi(struct user_regs_struct *regs, int child)
 	else if (g_syscall_table[regs->orig_rax].rdi == PTR)
 		printf("0x%llx", regs->rdi);
 	else if (g_syscall_table[regs->orig_rax].rdi == STRING) {
-		addr = ptrace(PTRACE_PEEKDATA, child, regs->rdi, NULL);
-		printf("\"%s\"", (char *)&addr);
+		printf("\"");
+		while (true) {
+			addr = ptrace(PTRACE_PEEKDATA, child, regs->rdi + incr, NULL);
+			if (errno != 0)
+				break;
+			printf("%s", (char *)&addr);
+			if (memchr(&addr, 0, sizeof(addr)))
+				break ;
+			incr += sizeof(addr);
+		}
+		printf("\"");
+		/*print_reg_as_str(regs, child);*/ // Why output differ when i call the function ?
 	}
 	else if (g_syscall_table[regs->orig_rax].rdi == NONE)
 		__asm__("nop");
