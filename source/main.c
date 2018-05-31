@@ -15,9 +15,9 @@ int	main(int argc, char **argv, char **env)
 {
 	pid_t					child = 0;
 	int						status = 0;
-	struct user_regs_struct	regs;
 	int						loop = 0;
 	char					*path = NULL;
+	struct user_regs_struct	regs;
 
 	usage(argc);
 
@@ -34,11 +34,24 @@ int	main(int argc, char **argv, char **env)
 	if (child == -1) {
 		perror("fork()");
 	}
-	else if (child == 0) {
+	else if (child == 0)
+	{
 		if (path == NULL)
-			execve(argv[1], &argv[1], env);
-		else
-			execve(path, &argv[1], env);
+		{
+			if (execve(argv[1], &argv[1], env) == -1)
+ 			{
+				perror("execve");
+				return (EXIT_FAILURE);
+			}
+			else
+			{
+				if (execve(path, &argv[1], env) == -1)
+				{
+					perror("execve");
+					return (EXIT_FAILURE);
+				}
+			}
+		}
 	} else {
 		kill(child, SIGSTOP);
 		ptrace(PTRACE_SEIZE, child, NULL, NULL);
