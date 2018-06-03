@@ -34,19 +34,13 @@ int	main(int argc, char **argv, char **env)
 	if (child == -1) {
 		perror("fork()");
 	}
-	else if (child == 0)
-	{
-		if (path == NULL)
-		{
-			if (execve(argv[1], &argv[1], env) == -1)
- 			{
+	else if (child == 0) {
+		if (path == NULL) {
+			if (execve(argv[1], &argv[1], env) == -1) {
 				perror("execve");
 				return (EXIT_FAILURE);
-			}
-			else
-			{
-				if (execve(path, &argv[1], env) == -1)
-				{
+			} else {
+				if (execve(path, &argv[1], env) == -1) {
 					perror("execve");
 					return (EXIT_FAILURE);
 				}
@@ -68,6 +62,7 @@ int	main(int argc, char **argv, char **env)
 			++loop;
 		}
 	}
+	/*printf("+++ exited with %d +++\n", (uint8_t)regs.rax);*/
 	if (path)
 		free(path);
 	return (0);

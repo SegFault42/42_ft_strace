@@ -21,6 +21,24 @@ extern const t_errno	g_errno_table[134];
 	/*printf("\"");*/
 /*}*/
 
+/*static void	test(struct user_regs_struct *regs, pid_t proc)*/
+/*{*/
+	/*char message[4096];*/
+	/*char* temp_char2 = message;*/
+	/*int j = 0;*/
+	/*long temp_long;*/
+
+	/*while( j < (regs->rdx/8) ) //regs.rdx stores the size of the input buffer*/
+	/*{*/
+		/*temp_long = ptrace(PTRACE_PEEKDATA, proc, regs->rsi + (j*sizeof(temp_long)) , NULL);*/
+		/*memcpy(temp_char2, &temp_long, 8);*/
+		/*temp_char2 += sizeof(long);*/
+		/*++j;*/
+	/*}*/
+	/*message[regs->rdx] = '\0';*/
+	/*printf("Message-%s-\n\n", message);*/
+/*}*/
+
 void	print_rdi(struct user_regs_struct *regs, int child)
 {
 	long	addr = 0;
@@ -54,7 +72,8 @@ void	print_rdi(struct user_regs_struct *regs, int child)
 
 void	print_rsi(struct user_regs_struct *regs, int child)
 {
-	long	addr = 0;
+	long		addr = 0;
+	uint64_t	incr = 0;
 
 	if (g_syscall_table[regs->orig_rax].rsi == SIGNED)
 		printf(", %d", (int)regs->rsi);
@@ -63,8 +82,18 @@ void	print_rsi(struct user_regs_struct *regs, int child)
 	else if (g_syscall_table[regs->orig_rax].rsi == PTR)
 		printf(", 0x%llx", regs->rsi);
 	else if (g_syscall_table[regs->orig_rax].rsi == STRING) {
-		addr = ptrace(PTRACE_PEEKDATA, child, regs->rsi, NULL);
-		printf(", \"%s\"", (char *)&addr);
+		printf(", \"");
+		while (true) {
+			addr = ptrace(PTRACE_PEEKDATA, child, regs->rdi + incr, NULL);
+			if (errno != 0)
+				break;
+			printf("%s", (char *)&addr);
+			if (memchr(&addr, 0, sizeof(addr)))
+				break ;
+			incr += sizeof(addr);
+		}
+		printf("\"");
+		/*print_reg_as_str(regs, child);*/ // Why output differ when i call the function ?
 	}
 	else if (g_syscall_table[regs->orig_rax].rsi == NONE)
 		__asm__("nop");
@@ -180,5 +209,6 @@ void	print(struct user_regs_struct *regs, int loop, int child)
 	}
 	else
 		print_rax(regs);
+
 
 }
