@@ -84,11 +84,11 @@ void	print_rsi(struct user_regs_struct *regs, int child)
 	else if (g_syscall_table[regs->orig_rax].rsi == STRING) {
 		printf(", \"");
 		while (true) {
-			addr = ptrace(PTRACE_PEEKDATA, child, regs->rdi + incr, NULL);
+			addr = ptrace(PTRACE_PEEKDATA, child, regs->rsi + incr, NULL);
 			if (errno != 0)
 				break;
 			printf("%s", (char *)&addr);
-			if (memchr(&addr, 0, sizeof(addr)))
+			if (memchr(&addr, 0, sizeof(addr)) || incr > (31 * sizeof(addr)))
 				break ;
 			incr += sizeof(addr);
 		}
@@ -207,8 +207,12 @@ void	print(struct user_regs_struct *regs, int loop, int child)
 		print_r9(regs, child);
 		printf(")");
 	}
-	else
+	else {
+		if (regs->orig_rax == 0) {
+			print_rsi(regs, child);
+		}
 		print_rax(regs);
+	}
 
 
 }
