@@ -208,9 +208,9 @@ void	print(struct user_regs_struct *regs, int loop, int child)
 		printf(")");
 	}
 	else {
-		if (regs->orig_rax == 0) {
-			print_rsi(regs, child);
-		}
+		/*if (regs->orig_rax == 0) {*/
+			/*print_rsi(regs, child);*/
+		/*}*/
 		print_rax(regs);
 	}
 
