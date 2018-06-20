@@ -71,12 +71,6 @@ typedef struct		s_syscall
 
 void	usage(int argc);
 void	print(struct user_regs_struct *regs, int loop, int child);
-void	print_rdi(struct user_regs_struct *regs, int child);
-void	print_rsi(struct user_regs_struct *regs, int child);
-void	print_rdx(struct user_regs_struct *regs, int child);
-void	print_r10(struct user_regs_struct *regs, int child);
-void	print_r8(struct user_regs_struct *regs, int child);
-void	print_r9(struct user_regs_struct *regs, int child);
 char	*get_path_bin(char *str);
 
 #endif

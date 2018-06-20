@@ -39,29 +39,33 @@ extern const t_errno	g_errno_table[134];
 	/*printf("Message-%s-\n\n", message);*/
 /*}*/
 
-void	print_rdi(struct user_regs_struct *regs, int child)
+static void	print_rdi(struct user_regs_struct *regs, int child, char *buffer)
 {
 	long	addr = 0;
 	uint64_t	incr = 0;
 
 	if (g_syscall_table[regs->orig_rax].rdi == SIGNED)
-		printf("%d", (int)regs->rdi);
+		sprintf(buffer, "%d", (int)regs->rdi);
 	else if (g_syscall_table[regs->orig_rax].rdi == UNSIGNED)
-		printf("%llu", regs->rdi);
+		sprintf(buffer, "%llu", regs->rdi);
 	else if (g_syscall_table[regs->orig_rax].rdi == PTR)
-		printf("0x%llx", regs->rdi);
+		sprintf(buffer, "0x%llx", regs->rdi);
 	else if (g_syscall_table[regs->orig_rax].rdi == STRING) {
-		printf("\"");
+		sprintf(buffer, "\"");
+		++buffer;
 		while (true) {
 			addr = ptrace(PTRACE_PEEKDATA, child, regs->rdi + incr, NULL);
-			if (errno != 0)
+			if (addr == -1)
 				break;
-			printf("%s", (char *)&addr);
-			if (memchr(&addr, 0, sizeof(addr)))
+			sprintf(buffer, "%s", (char *)&addr);
+			if (memchr(&addr, 0, sizeof(addr))) {
+				buffer += strlen((char *)&addr);
 				break ;
+			}
+			buffer += sizeof(addr);
 			incr += sizeof(addr);
 		}
-		printf("\"");
+		sprintf(buffer, "\"");
 		/*print_reg_as_str(regs, child);*/ // Why output differ when i call the function ?
 	}
 	else if (g_syscall_table[regs->orig_rax].rdi == NONE)
@@ -70,149 +74,163 @@ void	print_rdi(struct user_regs_struct *regs, int child)
 		printf("?");
 }
 
-void	print_rsi(struct user_regs_struct *regs, int child)
+static void	print_rsi(struct user_regs_struct *regs, int child, char *buffer)
 {
 	long		addr = 0;
 	uint64_t	incr = 0;
 
 	if (g_syscall_table[regs->orig_rax].rsi == SIGNED)
-		printf(", %d", (int)regs->rsi);
+		sprintf(buffer, ", %d", (int)regs->rsi);
 	else if (g_syscall_table[regs->orig_rax].rsi == UNSIGNED)
-		printf(", %llu", regs->rsi);
+		sprintf(buffer, ", %llu", regs->rsi);
 	else if (g_syscall_table[regs->orig_rax].rsi == PTR)
-		printf(", 0x%llx", regs->rsi);
+		sprintf(buffer, ", 0x%llx", regs->rsi);
 	else if (g_syscall_table[regs->orig_rax].rsi == STRING) {
-		printf(", \"");
+		sprintf(buffer, ", \"");
+		buffer += 2;
 		while (true) {
 			addr = ptrace(PTRACE_PEEKDATA, child, regs->rsi + incr, NULL);
-			if (errno != 0)
+			if (addr == -1)
 				break;
-			printf("%s", (char *)&addr);
-			if (memchr(&addr, 0, sizeof(addr)) || incr > (31 * sizeof(addr)))
+			sprintf(buffer, "%s", (char *)&addr);
+			if (memchr(&addr, 0, sizeof(addr)) || incr > (31)) {
+				buffer += strlen((char *)&addr);
 				break ;
+			}
+			buffer += sizeof(addr);
 			incr += sizeof(addr);
 		}
-		printf("\"");
+		sprintf(buffer, "\"");
 		/*print_reg_as_str(regs, child);*/ // Why output differ when i call the function ?
 	}
 	else if (g_syscall_table[regs->orig_rax].rsi == NONE)
 		__asm__("nop");
 	else
-		printf(", ?");
+		sprintf(buffer, ", ?");
 }
 
-void	print_rdx(struct user_regs_struct *regs, int child)
+static void	print_rdx(struct user_regs_struct *regs, int child, char *buffer)
 {
 	long	addr = 0;
 
 	if (g_syscall_table[regs->orig_rax].rdx == SIGNED)
-		printf(", %d", (int)regs->rdx);
+		sprintf(buffer, ", %d", (int)regs->rdx);
 	else if (g_syscall_table[regs->orig_rax].rdx == UNSIGNED)
-		printf(", %llu", regs->rdx);
+		sprintf(buffer, ", %llu", regs->rdx);
 	else if (g_syscall_table[regs->orig_rax].rdx == PTR)
-		printf(", 0x%llx", regs->rdx);
+		sprintf(buffer, ", 0x%llx", regs->rdx);
 	else if (g_syscall_table[regs->orig_rax].rdx == STRING) {
 		addr = ptrace(PTRACE_PEEKDATA, child, regs->rdx, NULL);
-		printf(", \"%s\"", (char *)&addr);
+		sprintf(buffer, ", \"%s\"", (char *)&addr);
 	}
 	else if (g_syscall_table[regs->orig_rax].rdx == NONE)
 		__asm__("nop");
 	else
-		printf(", ?");
+		sprintf(buffer, ", ?");
 }
 
-void	print_r10(struct user_regs_struct *regs, int child)
+static void	print_r10(struct user_regs_struct *regs, int child, char *buffer)
 {
 	long	addr = 0;
 
 	if (g_syscall_table[regs->orig_rax].r10 == SIGNED)
-		printf(", %d", (int)regs->r10);
+		sprintf(buffer, ", %d", (int)regs->r10);
 	else if (g_syscall_table[regs->orig_rax].r10 == UNSIGNED)
-		printf(", %llu", regs->r10);
+		sprintf(buffer, ", %llu", regs->r10);
 	else if (g_syscall_table[regs->orig_rax].r10 == PTR)
-		printf(", 0x%llx", regs->r10);
+		sprintf(buffer, ", 0x%llx", regs->r10);
 	else if (g_syscall_table[regs->orig_rax].r10 == STRING) {
 		addr = ptrace(PTRACE_PEEKDATA, child, regs->r10, NULL);
-		printf(", \"%s\"", (char *)&addr);
+		sprintf(buffer, ", \"%s\"", (char *)&addr);
 	}
 	else if (g_syscall_table[regs->orig_rax].r10 == NONE)
 		__asm__("nop");
 	else
-		printf(", ?");
+		sprintf(buffer, ", ?");
 }
 
-void	print_r8(struct user_regs_struct *regs, int child)
+static void	print_r8(struct user_regs_struct *regs, int child, char *buffer)
 {
 	long	addr = 0;
 
 	if (g_syscall_table[regs->orig_rax].r8 == SIGNED) {
-		printf(", %d", (int)regs->r8);
+		sprintf(buffer, ", %d", (int)regs->r8);
 	}
 	else if (g_syscall_table[regs->orig_rax].r8 == UNSIGNED) {
-		printf(", %llu", regs->r8);
+		sprintf(buffer, ", %llu", regs->r8);
 	}
 	else if (g_syscall_table[regs->orig_rax].r8 == PTR)
-		printf(", 0x%llx", regs->r8);
+		sprintf(buffer, ", 0x%llx", regs->r8);
 	else if (g_syscall_table[regs->orig_rax].r8 == STRING) {
 		addr = ptrace(PTRACE_PEEKDATA, child, regs->r8, NULL);
-		printf(", \"%s\"", (char *)&addr);
+		sprintf(buffer, ", \"%s\"", (char *)&addr);
 	}
 	else if (g_syscall_table[regs->orig_rax].r8 == NONE)
 		__asm__("nop");
 	else
-		printf(", ?");
+		sprintf(buffer, ", ?");
 }
 
-void	print_r9(struct user_regs_struct *regs, int child)
+static void	print_r9(struct user_regs_struct *regs, int child, char *buffer)
 {
 	long	addr = 0;
 
 	if (g_syscall_table[regs->orig_rax].r9 == SIGNED)
-		printf(", %d", (int)regs->r9);
+		sprintf(buffer, ", %d", (int)regs->r9);
 	else if (g_syscall_table[regs->orig_rax].r9 == UNSIGNED)
-		printf(", %llu", regs->r9);
+		sprintf(buffer, ", %llu", regs->r9);
 	else if (g_syscall_table[regs->orig_rax].r9 == PTR)
-		printf(", 0x%llx", regs->r9);
+		sprintf(buffer, ", 0x%llx", regs->r9);
 	else if (g_syscall_table[regs->orig_rax].r9 == STRING) {
 		addr = ptrace(PTRACE_PEEKDATA, child, regs->r9, NULL);
-		printf(", \"%s\"", (char *)&addr);
+		sprintf(buffer, ", \"%s\"", (char *)&addr);
 	}
 	else if (g_syscall_table[regs->orig_rax].r9 == NONE)
 		__asm__("nop");
 	else
-		printf(", ?");
+		sprintf(buffer, ", ?");
 }
 
-static void	print_rax(struct user_regs_struct *regs)
+static void	print_rax(struct user_regs_struct *regs, char *buffer)
 {
 	if (regs->orig_rax == EXIT_GROUP)
-		printf("\t= ?\n");
+		sprintf(buffer, "\t= ?\n");
 	else if ((long long int)regs->rax < 0)
-		printf("\t= -1 %s (%s)\n", g_errno_table[((long long int)regs->rax * -1)].define,
+		sprintf(buffer, "\t= -1 %s (%s)\n", g_errno_table[((long long int)regs->rax * -1)].define,
 									g_errno_table[((long long int)regs->rax * -1)].desc);
 	else
-		printf("\t= %lld\n", (long long int)regs->rax);
+		sprintf(buffer, "\t= %lld\n", (long long int)regs->rax);
 }
 
 void	print(struct user_regs_struct *regs, int loop, int child)
 {
+	static char	*array[11];
+	if (loop == 0) {
+		for (int i = 0; i < 11; i++)
+			array[i] = (char *)calloc(sizeof(char), 256);
+	}
+
 	if (!(loop % 2)) { // first time getting all param register and seconde time to get ret stored in rax
-		printf("%s", g_syscall_table[regs->orig_rax].name);
-		printf("(");
-		print_rdi(regs, child);
-		print_rsi(regs, child);
-		print_rdx(regs, child);
-		print_r10(regs, child);
-		print_r8(regs, child);
-		print_r9(regs, child);
-		printf(")");
+
+		sprintf(array[0], "%s", g_syscall_table[regs->orig_rax].name);
+		sprintf(array[1], "(");
+		print_rdi(regs, child, array[2]);
+		print_rsi(regs, child, array[3]);
+		print_rdx(regs, child, array[4]);
+		print_r10(regs, child, array[5]);
+		print_r8(regs, child, array[6]);
+		print_r9(regs, child, array[7]);
+		sprintf(array[8], ")");
 	}
 	else {
-		/*if (regs->orig_rax == 0) {*/
-			/*print_rsi(regs, child);*/
-		/*}*/
-		print_rax(regs);
+		if (regs->orig_rax == 0) {
+			print_rsi(regs, child, array[3]);
+		}
+		print_rax(regs, array[10]);
+		for (int i = 0; i < 10; i++) {
+			printf("%s", array[i]);
+			memset(array[i], 0, 256);
+		}
+		puts("");
 	}
-
-
 }
