@@ -1,6 +1,7 @@
 #include "../include/ft_strace.h"
 
 extern const t_syscall	g_syscall_table[330];
+pid_t					child = 0;
 
 void	usage(int argc)
 {
@@ -11,15 +12,24 @@ void	usage(int argc)
 	}
 }
 
+void	signal_handler(int signal)
+{
+	printf("strace: Process %d detached\n", child);
+	kill(child, SIGINT);
+	exit(EXIT_SUCCESS);
+}
+
 int	main(int argc, char **argv, char **env)
 {
-	pid_t					child = 0;
 	int						status = 0;
 	int						loop = 0;
 	char					*path = NULL;
+	sigset_t				empty;
+	sigset_t				blocker;
 	struct user_regs_struct	regs;
 
 	usage(argc);
+	signal(SIGINT, signal_handler);
 
 	// If we don't have absolute path, we need to search the binary path
 	if (argv[1][0] != '/' && argv[1][0] != '.') {
@@ -49,12 +59,22 @@ int	main(int argc, char **argv, char **env)
 	} else {
 		kill(child, SIGSTOP);
 		ptrace(PTRACE_SEIZE, child, NULL, NULL);
+
 		waitpid(child, &status, 0);
+		sigaddset(&blocker, SIGHUP);
+		sigaddset(&blocker, SIGINT);
+		sigaddset(&blocker, SIGQUIT);
+		sigaddset(&blocker, SIGPIPE);
+		sigaddset(&blocker, SIGTERM);
 		while (1) {
 			ptrace(PTRACE_SYSCALL, child, NULL, NULL);
-			waitpid(child, &status, 0);
-			ptrace(PTRACE_GETREGS, child, NULL, &regs);
 
+			sigemptyset(&empty);
+			sigprocmask(SIG_SETMASK, &empty, NULL);
+			waitpid(child, &status, 0);
+			sigprocmask(SIG_BLOCK, &blocker, NULL);
+
+			ptrace(PTRACE_GETREGS, child, NULL, &regs);
 			print(&regs, loop, child);
 
 			if (WIFEXITED(status))
