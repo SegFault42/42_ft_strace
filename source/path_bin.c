@@ -5,7 +5,7 @@ static size_t	ft_strclen(char *str, char c)
 	char	*ptr = str;
 
 	while (*ptr != c && *ptr != 0)
-		*++ptr;
+		++ptr;
 	return ((size_t)(ptr - str));
 }
 

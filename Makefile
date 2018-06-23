@@ -1,7 +1,7 @@
 ##################################_COMPILATION_#################################
 NAME	= ft_strace
 CC		= clang
-FLAG	= -Weverything #-fsanitize=address -fno-omit-frame-pointer
+FLAG	= -Wall -Wextra -Werror
 SRCS	=	./source/main.c\
 			./source/errno_tbl.c\
 			./source/syscall_tbl.c\

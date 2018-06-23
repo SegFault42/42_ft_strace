@@ -14,6 +14,7 @@ void	usage(int argc)
 
 void	signal_handler(int signal)
 {
+	(void)signal;
 	printf("strace: Process %d detached\n", child);
 	kill(child, SIGINT);
 	exit(EXIT_SUCCESS);
@@ -49,11 +50,11 @@ int	main(int argc, char **argv, char **env)
 			if (execve(argv[1], &argv[1], env) == -1) {
 				perror("execve");
 				return (EXIT_FAILURE);
-			} else {
-				if (execve(path, &argv[1], env) == -1) {
-					perror("execve");
-					return (EXIT_FAILURE);
-				}
+			}
+		} else {
+			if (execve(path, &argv[1], env) == -1) {
+				perror("execve");
+				return (EXIT_FAILURE);
 			}
 		}
 	} else {
