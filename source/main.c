@@ -78,11 +78,13 @@ int	main(int argc, char **argv, char **env)
 			print(&regs, loop, child);
 
 			if (WIFEXITED(status))
+			{
+				dprintf(2, "+++ exited with %d +++\n", (uint8_t)WEXITSTATUS(status));
 				break ;
+			}
 			++loop;
 		}
 	}
-	/*printf("+++ exited with %d +++\n", (uint8_t)regs.rax);*/
 	if (path)
 		free(path);
 	return (0);
